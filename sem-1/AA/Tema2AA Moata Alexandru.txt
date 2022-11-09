@@ -1,0 +1,211 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#define COUNT 10
+
+typedef struct Node Node;
+
+struct Node
+{
+	int key;
+	Node *left;
+	Node *right;
+};
+
+typedef struct Trunk Trunk;
+
+struct Trunk
+{
+	Trunk* prev;
+	char* str;
+};
+
+Trunk* create_trunk(Trunk* prev, char* str)
+{
+	Trunk* result = (Trunk*)malloc(sizeof(Trunk));
+	result->prev = prev;
+	result->str = (char*)malloc((strlen(str) + 1) * sizeof(char));
+	strcpy(result->str, str);
+	return result;
+}
+
+void showTrunks(Trunk *p)
+{
+	if (p == NULL) {
+		return;
+	}
+
+	showTrunks(p->prev);
+	printf("%s", p->str);
+}
+
+void printTree(Node* root, Trunk *prev, int isLeft)
+{
+	if (root == NULL) {
+		return;
+	}
+
+	char prev_str[5] = "    ";
+	Trunk* trunk = create_trunk(prev, prev_str);
+
+	printTree(root->right, trunk, 1);
+
+	if (!prev) {
+		strcpy(trunk->str, "———");
+	}
+	else if (isLeft)
+	{
+		strcpy(trunk->str, ".———");
+		strcpy(prev_str, "   |");
+	}
+	else {
+		strcpy(trunk->str, "`———");
+		strcpy(prev->str, prev_str);
+	}
+
+	showTrunks(trunk);
+	printf(" %d\n", root->key);
+
+	if (prev) {
+		strcpy(prev->str, prev_str);
+	}
+	strcpy(trunk->str, "   |");
+
+	printTree(root->left, trunk, 0);
+}
+
+void pretty_print(Node* node)
+{
+	printTree(node, NULL, 0);
+}
+
+
+Node *create_node(int key)
+{
+	Node* root = (Node*)malloc(sizeof(Node));
+	root->key = key;
+	root->left = NULL;
+	root->right = NULL;
+
+	return root;
+}
+
+// TODO
+/*
+CREATE THE TREE BELOW AND RETURN THE ROOT AT THE END
+
+			0
+		   / \
+		  4   5
+		 / \
+		1   10
+
+Is this a binary search tree?
+Nu
+*/
+
+Node* test_create_tree()
+{
+	Node* root = create_node(0);
+	Node* n4 = create_node(4);
+	Node* n1 = create_node(1);
+	Node* n10 = create_node(10);
+	Node* n5 = create_node(5);
+
+	root->left = n4;
+	root->right = n5;
+	n4->left = n1;
+	n5->right = n10;
+
+	return root;
+}
+
+
+
+void print(Node *root)
+{
+	if (root != NULL)
+	{
+		print(root->left);
+		print(root->right);
+
+		printf("%d ", root->key);
+	}
+}
+
+void test_print()
+{
+	Node* root = test_create_tree();
+	print(root);
+	printf("\n");
+}
+
+
+
+Node *insert_bst(Node *node, int key)
+{
+
+	if (node == NULL)
+		return create_node(key);
+	if (node->key < key)
+		node->left = insert_bst(node->left, key);
+	if (node->key > key)
+		node->right = insert_bst(node->right, key);
+	
+
+
+	return node;
+}
+
+Node* test_insert()
+{
+	Node *root = NULL;
+
+	root = insert_bst(root, 10);
+	root = insert_bst(root, 20);
+	root = insert_bst(root, 5);
+	root = insert_bst(root, 40);
+	root = insert_bst(root, 18);
+	root = insert_bst(root, 7);
+	root = insert_bst(root, 2);
+	root = insert_bst(root, 19);
+	root = insert_bst(root, 38);
+
+	return root;
+}
+
+
+Node *insert_bst_with_height(Node *node, int key)
+{
+	return NULL;
+}
+
+int main()
+{
+	Node* tree1 = test_create_tree();
+	pretty_print(tree1);
+	test_print();
+
+	Node* tree2 = test_insert();
+	pretty_print(tree2);
+}
+
+
+// SOLUTION OUTPUT
+/*
+	.——— 5
+——— 0
+   |    .——— 10
+	`——— 4
+		`——— 1
+1 10 4 5 0
+		.——— 40
+	   |    `——— 38
+	.——— 20
+   |   |    .——— 19
+   |    `——— 18
+——— 10
+   |    .——— 7
+	`——— 5
+		`——— 2
+*/
