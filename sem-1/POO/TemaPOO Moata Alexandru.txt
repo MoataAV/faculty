@@ -1,0 +1,158 @@
+//Să se realizeze o aplicaţie C++ care asigură evidența articolelor într - un magazin de electronice.
+//
+//Aragaz sunt caracterizate după producator, culoare si pret.
+//
+//Cuptoare cu microunde după producător, putere și preț.
+//
+//Programul trebuie să permită următoarele :
+//
+//-introducerea a unui nou articol de la tastatură.
+//
+//- Afișarea articolelor în ordinea producătorului
+//
+//- Afișarea tuturor articolelor care au prețul citit de la tastatura
+//
+//- Se va șterge toate articolele care au un nume de productor citit de la tastatură
+//
+//- Ieșire
+//
+//Observaţii :
+//
+//Se va folosi o ierarhie de clase(1 clasă de bază și 2 clase derivate).
+#include <iostream>
+#include<conio.h>
+#include<string>
+using namespace std;
+class Magazin
+{
+	string producator;
+	unsigned int pret;
+public:
+	Magazin() {}
+	
+	Magazin(string producator, unsigned int pret)
+	{
+		Magazin::producator = producator;
+		Magazin::pret = pret;
+	}
+
+	void afisare()
+	{
+		cout << "producator: " << Magazin::producator << endl;
+		cout << "pret: " << Magazin::pret << endl;
+	}
+
+	string returnareProducator()
+	{
+		return Magazin::producator;
+	}
+	
+	int returnarePret()
+	{
+		return Magazin::pret;
+	}
+};
+
+class Aragaz : public Magazin{
+	string culoare;
+public:
+	
+	Aragaz() {}
+	
+	Aragaz(string producator, unsigned int pret, string culoare) : Magazin(producator, pret)
+	{
+		Aragaz::culoare = culoare;		
+	}
+
+	void afisare()
+	{
+		Magazin::afisare();
+		cout << "culoare: " << Aragaz::culoare << "\n";
+		cout << endl;
+	}
+};
+
+class Cuptoare : public Magazin {
+	 int putere;
+public:
+	
+	Cuptoare() {}
+
+	Cuptoare(string producator, unsigned int pret, int putere ) : Magazin(producator, pret)
+	{
+		Cuptoare::putere = putere;
+	}
+	
+	void afisare()
+	{
+		Magazin::afisare();
+		cout << "putere: " << Cuptoare::putere << "\n";
+		cout << endl;
+	}
+};
+int main()
+{
+	int pr, i, j, pret;
+	string p;
+	int nr = 0;
+	int opt;
+	Magazin articol[20], aux;
+	do {
+
+		cout << "1. Introducerea a unui nou articol de la tastatură" << endl;
+		cout << "2. Afișarea articolelor în ordinea producătorului" << endl;
+		cout << "3. Afișarea tuturor articolelor care au prețul citit de la tastatura" << endl;
+		cout << "4. Se va șterge toate articolele care au un nume de productor citit de la tastatură" << endl;
+		cout << "0. Iesire." << endl;
+		cout << " Dati optiunea: ";
+		cin >> opt;
+		switch (opt)
+		{
+		case 1:
+		{		
+			cin.get();
+			cout << "Procudatorul este:";
+			getline(cin, p);
+			cout << "Pretul este:";
+			cin >> pr;
+			articol[nr] = Magazin(p, pr);
+			nr++;
+			break;
+		}
+		case 2:
+			/*for (int i = 0; i < nr-1; i++)
+				for (int j = i; j < nr; j++)
+					if (producator.compare(articol[i], articol[j]) > 0)
+					{
+						aux = articol[i];
+						articol[i] = articol[j];
+						articol[j] = aux;
+					}*/
+			for (int i = 0; i < nr; i++) 
+				articol[i].afisare();
+			break;
+		case 3:
+			{
+			/*fflush(stdin);
+			cin.get();
+			cout << "Dati pretul cautat: ";
+			cin >> pret;
+			for (int i = 0; i < nr; i++)
+				if (p.compare(articol[i].returnarePret())==0)
+				{
+					cout << "art este: ";
+					cout << articol[i];	
+				}
+			*/
+			break; 
+			}
+		case 4:
+
+			break;
+		case 0:
+			break;
+		}
+	} while (opt != 0);
+	return 0;
+}
+
