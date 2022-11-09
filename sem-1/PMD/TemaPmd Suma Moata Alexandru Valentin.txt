@@ -1,0 +1,29 @@
+
+org 100h
+
+.data 
+
+rez db ?
+
+.code
+
+mov ah,1
+int 21h 
+sub al, 30h
+mov rez, al
+
+mov ah,1
+int 21h  
+sub al, 30h
+add rez, al
+
+mov ah,1
+int 21h 
+sub al, 30h
+add rez, al
+
+ret
+
+
+
+
