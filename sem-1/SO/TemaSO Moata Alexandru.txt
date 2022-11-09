@@ -1,0 +1,50 @@
+#!/bin/sh
+  
+start=`date +%s` 
+PS3='Alegeti optiunea: '
+options=("1:EXIT" "2:Afisare.." "3:Afisare craciun" "4:Afisare primele 2" "5:Afisare toti utilizatorii" "6:Afisare ultimele linii 9+" "7:Afisare tip procesor, marime cache" "8:Comanda ls" "9:Toate fisierele de log")
+select optiuni in "${options[@]}"
+do
+    case $optiuni in
+        "1:EXIT")
+            echo "EXIT"
+            break;
+            ;;
+        "2:Afisare..")
+            echo "Opt 2"
+            end=`date +%s` 
+            runtime=$((end-start))
+            echo -e " PID:$$ \n OS:$(uname) \n PATH: $PATH \n NR SECUNDE: $runtime "
+            ;;
+        "3:Afisare craciun")     
+            echo "Opt 3"
+            ;;
+        "4:Afisare primele 2")
+            echo "Opt 4"
+            head -n 2 /etc/shells
+            ;;
+        "5:Afisare toti utilizatorii")
+            echo "Opt 5"
+            cat /etc/passwd | tr ':' '\t' | awk '{print $1, $3, $5, $7}'
+            ;;
+        "6:Afisare ultimele linii 9+")
+            echo "Opt 6"
+            tail -f -n 9 /etc/protocols
+            ;;
+        "7:Afisare tip procesor, marime cache")
+            echo "Opt 7"
+            echo "Procesor: "
+            cat /proc/cpuinfo | grep -i "Model name"
+            echo "Marimea cache-ului: "
+            cat /proc/cpuinfo | grep -i "cache size"
+            echo ""
+            ;;
+        "8:Comanda ls")
+            echo "Opt 8"
+          ;;
+        "9:Toate fisierele de log")
+            echo "Opt 9"
+            ;;
+        *) echo "Optiune gresita...";;
+    esac
+done
